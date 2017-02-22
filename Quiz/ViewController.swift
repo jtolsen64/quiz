@@ -54,6 +54,11 @@ class ViewController: UIViewController {
     }
     
     func updateOffScreenLabel() {
+        let space1 = UILayoutGuide()
+        view.addLayoutGuide(space1)
+        //space1.widthAnchor.constraint(equal to: self.view.widthAnchor).isActive=true
+        //current label trail= spae1 trail
+        //current label lead= space1 lead
         let screenWidth = view.frame.width
         nextQuestionLabelCenterXConstraint.constant = -screenWidth
     }
