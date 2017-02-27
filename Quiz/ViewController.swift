@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     @IBOutlet var nextQuestionLabel: UILabel!
     @IBOutlet var nextQuestionLabelCenterXConstraint: NSLayoutConstraint!
     @IBOutlet var answerLabel: UILabel!
+    var isVisible = false
+    var doubleTap = false
     
     let questions: [String] = [
        "What is 7+7?",
@@ -29,7 +31,14 @@ class ViewController: UIViewController {
     var currentQuestionIndex: Int = 0
     
     @IBAction func showNextQuestion(_ sender: UIButton) {
-       currentQuestionIndex += 1
+        if (doubleTap){
+            isVisible=false
+            doubleTap=false
+        }else{
+            isVisible=true
+            doubleTap=true
+        }
+        currentQuestionIndex += 1
         if currentQuestionIndex == questions.count {
             currentQuestionIndex = 0
         }
@@ -42,23 +51,27 @@ class ViewController: UIViewController {
     }
     
     @IBAction func showAnswer(_ sender: UIButton) {
-        let answer: String = answers[currentQuestionIndex]
-        answerLabel.text = answer
+        if isVisible{
+            let answer: String = answers[currentQuestionIndex]
+            answerLabel.text = answer
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         currentQuestionLabel.text = questions[currentQuestionIndex]
+        let space1 = UILayoutGuide()
+        view.addLayoutGuide(space1)
+        space1.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive=true
+        currentQuestionLabel.leadingAnchor.constraint(equalTo: space1.trailingAnchor).isActive = true
+        currentQuestionLabel.trailingAnchor.constraint(equalTo: space1.leadingAnchor).isActive = true
+        isVisible=false
         
         updateOffScreenLabel()
     }
     
     func updateOffScreenLabel() {
-        let space1 = UILayoutGuide()
-        view.addLayoutGuide(space1)
-        //space1.widthAnchor.constraint(equal to: self.view.widthAnchor).isActive=true
-        //current label trail= spae1 trail
-        //current label lead= space1 lead
+        
         let screenWidth = view.frame.width
         nextQuestionLabelCenterXConstraint.constant = -screenWidth
     }
