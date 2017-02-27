@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     @IBOutlet var nextQuestionLabel: UILabel!
     @IBOutlet var nextQuestionLabelCenterXConstraint: NSLayoutConstraint!
     @IBOutlet var answerLabel: UILabel!
+    
+    //for fixing the answers when the question is off screen
     var isVisible = false
     var doubleTap = false
     
@@ -30,6 +32,8 @@ class ViewController: UIViewController {
     ]
     var currentQuestionIndex: Int = 0
     
+    //shows next question and sets isVisbile to true, or hides the current question
+    //and sets isVisible to false
     @IBAction func showNextQuestion(_ sender: UIButton) {
         if (doubleTap){
             isVisible=false
@@ -50,6 +54,7 @@ class ViewController: UIViewController {
         animateLabelTransitions()
     }
     
+    //shows the answer if the current question isVisible
     @IBAction func showAnswer(_ sender: UIButton) {
         if isVisible{
             let answer: String = answers[currentQuestionIndex]
@@ -57,6 +62,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //sets up the view and the UILayoutGuide
     override func viewDidLoad() {
         super.viewDidLoad()
         currentQuestionLabel.text = questions[currentQuestionIndex]
@@ -70,12 +76,14 @@ class ViewController: UIViewController {
         updateOffScreenLabel()
     }
     
+    //puts one of the question labels off screen
     func updateOffScreenLabel() {
         
         let screenWidth = view.frame.width
         nextQuestionLabelCenterXConstraint.constant = -screenWidth
     }
     
+    //animates the question label
     func animateLabelTransitions() {
         //Force any outstanding layout changes to occur
         view.layoutIfNeeded()
